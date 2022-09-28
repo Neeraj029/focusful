@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 // import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class video_screen extends StatefulWidget {
@@ -55,6 +57,7 @@ class _video_screenState extends State<video_screen> {
     //     mute: false,
     //   ),
     // );
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "watching_video");
     return new WillPopScope(
       onWillPop: _onWillPop,
       child: MaterialApp(
