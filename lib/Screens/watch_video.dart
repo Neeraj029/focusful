@@ -30,6 +30,16 @@ class _video_screenState extends State<video_screen> {
     super.initState();
   }
 
+  // if full screen is enabled, then disable it after clicking back button and if it is already disabled, return back to home screen
+  Future<bool> _onWillPop() async {
+    if (controller.isFullScreen) {
+      controller.disableFullScreen(context);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -45,19 +55,21 @@ class _video_screenState extends State<video_screen> {
     //     mute: false,
     //   ),
     // );
-
-    return MaterialApp(
-      title: 'PP Edtech',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return new WillPopScope(
+      onWillPop: _onWillPop,
+      child: MaterialApp(
+        title: 'PP Edtech',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+            backgroundColor: Colors.black38,
+            body: SafeArea(
+              child: Center(
+                child: PodVideoPlayer(controller: controller),
+              ),
+            )),
       ),
-      home: Scaffold(
-          backgroundColor: Colors.black38,
-          body: SafeArea(
-            child: Center(
-              child: PodVideoPlayer(controller: controller),
-            ),
-          )),
     );
   }
 }

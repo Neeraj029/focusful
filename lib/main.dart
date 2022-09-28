@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:focusful/Screens/watch_video.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,25 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
 
-  runApp(MaterialApp(
-    home: MyApp(),
-  ));
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+    runApp(MaterialApp(home: MyApp()));
+  },
+      (error, stack) =>
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
+
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    await FirebaseCrashlytics.instance.recordError(
+      errorAndStacktrace.first,
+      errorAndStacktrace.last,
+      fatal: true,
+    );
+  }).sendPort);
 }
 
 class MyApp extends StatefulWidget {
@@ -67,6 +81,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     super.initState();
     makeItems();
   }
@@ -100,6 +115,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   addChannel() {
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Add Channel");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -228,6 +244,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   deleteWarning(channelItemsNameSingle) {
+    FirebaseAnalytics.instance.setCurrentScreen(
+        screenName: "delete_channel_warning",
+        screenClassOverride: "delete_channel_warning");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -358,6 +377,7 @@ class _MyAppState extends State<MyApp> {
     final scaffold = ScaffoldMessenger.of(context);
 
     // print(channelItemsName);
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: "Home");
     return Scaffold(
       backgroundColor: Colors.black38,
       body: Column(
