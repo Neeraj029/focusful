@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1073534575066",
+    "project_id": "focusful-5fdad",
+    "storage_bucket": "focusful-5fdad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073534575066:android:b7e7949c3c8d040188a0e3",
+        "android_client_info": {
+          "package_name": "com.example.focusful"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073534575066-kfo8lhgm2gt4rcs6q20564a6khu3jihv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACTZMk0U75WTtACNFsf8yrEVFTfl_BSsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073534575066-kfo8lhgm2gt4rcs6q20564a6khu3jihv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
